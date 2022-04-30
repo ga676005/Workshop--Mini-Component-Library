@@ -8,18 +8,20 @@ import VisuallyHidden from '../VisuallyHidden';
 
 const STYLES = {
   small: {
+    height: 24,
     fontSize: 14,
-    leftPadding: 24,
+    borderWidth: 1,
     icon: { 
       size: 14,
       strokeWidth: 1,
     }
   },
   large:{
+    height: 36,
     fontSize: 18,
-    leftPadding: 34,
+    borderWidth: 2,
     icon: { 
-      size: 18,
+      size: 24,
       strokeWidth: 2,
     }
   }
@@ -30,55 +32,59 @@ const IconInput = ({
   icon,
   width = 250,
   size,
-  placeholder,
+  ...props
 }) => {
   const style = STYLES[size]
 
   return (
     <Wrapper>
       <VisuallyHidden>{label}</VisuallyHidden>
-      <IconWrapper>
+      <IconWrapper style={{ '--size': style.icon.size + 'px' }}>
         <Icon {...style.icon} id={icon}/>
       </IconWrapper>
       <NativeInput 
+        {...props}
         style={{
           '--width': width + 'px',
-          '--font-size': style.fontSize + 'px',
-          '--left-padding': style.leftPadding + 'px'
+          '--height': style.height / 16 + 'rem',
+          '--font-size': style.fontSize / 16 + 'rem',
+          '--border-width': style.borderWidth + 'px'
         }}
-        placeholder={placeholder}
       />
     </Wrapper>
   );
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled.label`
   position: relative;
+  display: block;
+  color: ${COLORS.gray700};
+
+  &:hover {
+    color: ${COLORS.black};
+  }
 `
 
 const IconWrapper = styled.div`
   position: absolute;
-  top: 50%;
-  left: 2px;
-  transform: translateY(-50%);
-  pointer-events: none;
-
-  color: ${COLORS.gray700};
-  ${Wrapper}:hover &{
-    color: black;
-  }
+  top: 0;
+  bottom: 0;
+  height: var(--size);
+  margin: auto 0;
 `
 
 const NativeInput = styled.input`
   width: var(--width);
-  padding-left: var(--left-padding);
-  border: 1px solid transparent;
+  height: var(--height);
+  padding-left: var(--height);
+  border: var(--border-width) inset transparent;
+  border-radius: 2px;
   border-bottom-color: red;
   outline-offset: 4px;
 
   font-size: var(--font-size);
   font-weight: 700;
-  color: ${COLORS.gray700};
+  color: inherit;
 
   &::placeholder {
     font-weight: 400;
@@ -87,10 +93,6 @@ const NativeInput = styled.input`
 
   &:not(:placeholder-shown) {
     border-bottom-color: ${COLORS.gray700};
-  }
-
-  ${Wrapper}:hover &{
-    color: black;
   }
 `
 
