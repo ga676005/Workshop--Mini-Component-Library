@@ -9,7 +9,7 @@ import VisuallyHidden from '../VisuallyHidden';
 const STYLES = {
   small: {
     fontSize: 14,
-    '--border-width': 1,
+    leftPadding: 24,
     icon: { 
       size: 14,
       strokeWidth: 1,
@@ -17,7 +17,7 @@ const STYLES = {
   },
   large:{
     fontSize: 18,
-    '--border-width': 2,
+    leftPadding: 34,
     icon: { 
       size: 18,
       strokeWidth: 2,
@@ -38,13 +38,13 @@ const IconInput = ({
     <Wrapper>
       <VisuallyHidden>{label}</VisuallyHidden>
       <IconWrapper>
-        <Icon size={style.icon.size} id={icon} strokeWidth={style.icon.strokeWidth}/>
+        <Icon {...style.icon} id={icon}/>
       </IconWrapper>
       <NativeInput 
         style={{
           '--width': width + 'px',
           '--font-size': style.fontSize + 'px',
-          '--border-width': style.borderWidth
+          '--left-padding': style.leftPadding + 'px'
         }}
         placeholder={placeholder}
       />
@@ -71,7 +71,7 @@ const IconWrapper = styled.div`
 
 const NativeInput = styled.input`
   width: var(--width);
-  padding-left: 32px;
+  padding-left: var(--left-padding);
   border: 1px solid transparent;
   border-bottom-color: red;
   outline-offset: 4px;
